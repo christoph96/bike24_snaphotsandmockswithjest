@@ -4,7 +4,7 @@ import React from 'react'
 function Hello() {
     return (
         <div>
-            <h1>Hello you!</h1>
+            <h1>Hello people!</h1>
             <p>Snapshots and Mocks are awesome with Jest</p>
         </div>
     )

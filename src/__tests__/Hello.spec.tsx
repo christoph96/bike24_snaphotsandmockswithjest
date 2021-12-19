@@ -24,28 +24,19 @@ import {
 // })
 
 describe('snapshot tests', () => {
-    it('should render component', () => {
+    it.skip('should render component', () => {
         const tree = renderer.create(<Hello />).toJSON()
 
         expect(tree).toMatchSnapshot()
     })
 
-    it('should render component inline', () => {
+    it.skip('should render component inline', () => {
         const tree = renderer.create(<Hello />).toJSON()
 
-        expect(tree).toMatchInlineSnapshot(`
-<div>
-  <h1>
-    Hello you!
-  </h1>
-  <p>
-    Snapshots and Mocks are awesome with Jest
-  </p>
-</div>
-`)
+        expect(tree).toMatchInlineSnapshot()
     })
 
-    it('should throw an error if amount is 0', () => {
+    it.skip('should throw an error if amount is 0', () => {
         const invalidData: SomeData = {
             label: 'some label',
             amount: 0,
@@ -53,12 +44,10 @@ describe('snapshot tests', () => {
 
         expect(() =>
             crunchSomeData(invalidData)
-        ).toThrowErrorMatchingInlineSnapshot(
-            `"This amount is not acceptable. Choose another one that is not 0."`
-        )
+        ).toThrowErrorMatchingInlineSnapshot()
     })
 
-    it('should return a random ID on the data object', () => {
+    it.skip('should return a random ID on the data object', () => {
         const validData: SomeData = {
             label: 'some label',
             amount: 1,
@@ -66,25 +55,20 @@ describe('snapshot tests', () => {
 
         const data = crunchSomeData(validData)
 
-        expect(data).toMatchInlineSnapshot(
-            { id: expect.any(String) },
-            `
-Object {
-  "amount": 1,
-  "id": Any<String>,
-  "label": "some label",
-}
-`
-        )
+        // This is a property matcher. It specifies flexibilities on the snapshot.
+        // { id: expect.any(String) },
+        expect(data).toMatchInlineSnapshot()
     })
 })
 
 describe('demonstrate jest mocking capabilities', () => {
+    // Restore the implementation of all mock functions under
+    // jests control to their original implementation.
     // beforeEach(() => {
     //     jest.restoreAllMocks()
     // })
 
-    it('should demonstrate a mock function', () => {
+    it.skip('should demonstrate a mock function', () => {
         const mockCallback = jest.fn(() => 123)
         // Show different utilities of a mock function in jest
 
@@ -96,7 +80,7 @@ describe('demonstrate jest mocking capabilities', () => {
 
     // We store the actual implementation of fetch somewhere to reassign it later when we restore the mock.
     const unmockedFetch = global.fetch
-    it('should mock the global fetch API manually', async () => {
+    it.skip('should mock the global fetch API manually', async () => {
         // fetch API is mocked in the upcoming calls by manually assigning it.
         const mockedFetch = jest.fn(async () =>
             Promise.resolve({
@@ -117,7 +101,7 @@ describe('demonstrate jest mocking capabilities', () => {
         global.fetch = unmockedFetch
     })
 
-    it('should show the jest spyOn way to mock a objects method', async () => {
+    it.skip('should show the jest spyOn way to mock a objects method', async () => {
         const fetchMock = jest
             .spyOn(global, 'fetch')
             .mockImplementation(() =>
@@ -150,34 +134,6 @@ describe('demonstrate jest mocking capabilities', () => {
 
         expect(processCallback).toBeUndefined()
         expect(res).toHaveLength(1)
-    })
-})
-
-describe('Last but not least', () => {
-    it('should snapshot a mocked function', async () => {
-        const fetchMock = jest
-            .spyOn(global, 'fetch')
-            .mockImplementation(() =>
-                Promise.resolve({ json: () => Promise.resolve([]) })
-            )
-
-        await doSideEffectsOrExpensiveStuff()
-
-        expect(fetchMock).toMatchInlineSnapshot(`
-[MockFunction] {
-  "calls": Array [
-    Array [
-      "https://jsonplaceholder.typicode.com/posts",
-    ],
-  ],
-  "results": Array [
-    Object {
-      "type": "return",
-      "value": Promise {},
-    },
-  ],
-}
-`)
     })
 })
 

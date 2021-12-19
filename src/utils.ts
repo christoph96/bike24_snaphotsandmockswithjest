@@ -10,9 +10,7 @@ export const crunchSomeData = (data: SomeData): SomeData => {
     const { label, amount } = data
 
     if (amount === 0) {
-        throw new Error(
-            'This amount is not acceptable. Choose another one that is not 0.'
-        )
+        throw new Error('This amount is not acceptable. Choose another one.')
     }
 
     return {
